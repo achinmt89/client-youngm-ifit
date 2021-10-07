@@ -4,8 +4,12 @@ Sample data provided by client (via email)
 
 ## Format
 
-* TCX
+* TCX (flavour of XML)
 * CSV
+
+## Size 
+
+151KB compressed
 
 ## Governance
 
