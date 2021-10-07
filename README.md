@@ -4,7 +4,7 @@ Project to solve Mick Y's exercise data problem
 
 ## Description 
 
-We recently purchased a [NordicTrack s15i](https://www.nordictrackfitness.com.au/product/commercial-studio-bikes/104/nordictrack-commercial-s15i-studio-cycle/12624/details) exercise bike which comes with the iFit application. The iFit app captures and stores data about each workout which can be accessed using a touchscreen on the bike (the touchscreen is essentially an Android tablet), but also via an app or by logging into a website. Workouts can be exported from the website in two different formats.
+We recently purchased a [NordicTrack s15i](https://www.nordictrackfitness.com.au/product/commercial-studio-bikes/104/nordictrack-commercial-s15i-studio-cycle/12624/details) exercise bike which comes with the [iFit](https://www.ifit.com/apps) application. The iFit app captures and stores data about each workout which can be accessed using a touchscreen on the bike (the touchscreen is essentially an Android tablet), but also via an app or by logging into a website. Workouts can be exported from the website in two different formats.
  
 The problem to solve is to enable an import of all the iFit workout data into my Garmin Connect account as that is where I currently aggregate all my health data. The two export formats (TCX and CSV) are not identical and each contain unique information, so they need to be merged into a single dataset containing the full complement of workout data. Garmin Connect accepts the TCX format, so the merged dataset needs exported as a TCX file.
  
