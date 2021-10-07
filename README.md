@@ -15,9 +15,9 @@ Ideally client would love either:
 1. An app where they can choose a workout from iFit and it imports it into Garmin Connect; or 
 2. Slightly less ambitious, but nevertheless really useful outcome, would be a program where the client can download the workout files, pass them to a program which merges them and provides a new file to be imported into Garmin Connect.  
 
-The client found a GitHub repo where someone had developed `R` code which does the latter contain some good clues about what needs to be done. Copy of `iFit.R` code in the `markbulk-ifit-R` repo directory.
+The client found the [`markbulk/iFit_TCX_CSV_Meld`](https://github.com/markbulk/iFit_TCX_CSV_Meld) GitHub repo *Melding TCX & CSV files for the NordicTrack S22i*. where someone had developed `R` code which does the latter contain some good clues about what needs to be done. Copy of `iFit.R` code in the `markbulk-ifit-R` repo directory.
 
-[`markbulk/iFit_TCX_CSV_Meld`](https://github.com/markbulk/iFit_TCX_CSV_Meld): Melding TCX & CSV files for the *NordicTrack S22i*.
+
 
 ## Sample Data
 
