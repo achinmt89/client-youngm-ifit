@@ -16,7 +16,7 @@ Ideally would love an app where user can choose a workout from iFit and it impor
 
 Whilst searching the web for a solution to the problem, user found a GitHub repo where someone had developed `R` code which does the latter. No doubt this will contain some good clues about what needs to be done. 
 
-`markbulk/iFit_TCX_CSV_Meld`: Melding TCX & CSV files for the *NordicTrack S22i*.
+[`markbulk/iFit_TCX_CSV_Meld`](https://github.com/markbulk/iFit_TCX_CSV_Meld): Melding TCX & CSV files for the *NordicTrack S22i*.
 
 ## Sample Data
 
