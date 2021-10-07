@@ -1,4 +1,4 @@
-# `client-myoung`
+# `client-youngm-ifit`
 
 Project to solve Mr. M Young's exercise data problem
 
