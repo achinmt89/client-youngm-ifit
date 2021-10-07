@@ -1,4 +1,4 @@
-# Data
+# Data Summary
 
 Sample data provided by client (via email)
 
@@ -7,10 +7,12 @@ Sample data provided by client (via email)
 * TCX
 * CSV
 
-## Sensitivity
+## Governance
+
+### Sensitivity
 
 Confirmed with client no-explicit-PII data provided.
 
-## Compliance
+### Data Sharing Agreement (DSA)
 
 Note that no explicit data-sharing agreement is currently active (nor required).
