@@ -1,6 +1,6 @@
-# furry-octo-disco
+# `client-myoung`
 
-Project to solve Mick Y's exercise data problem
+Project to solve Mr. M Young's exercise data problem
 
 ## Background
 
