@@ -6,3 +6,7 @@ Sample data provided by client (via email)
 
 * TCX
 * CSV
+
+## Sensitivity
+
+Confirmed with client no-explicit-PII data provided.
