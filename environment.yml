@@ -16,6 +16,7 @@ dependencies:
   # OTHER
   - httpx
   - rich
+  - streamlit
   # DEVELOPMENT ONLY PACKAGES (could also be kept in a separate environment file)
   - pytest
   - pytest-cov
@@ -30,9 +31,5 @@ dependencies:
   - pyscaffoldext-dsproject
   # PIP INSTALLS (CONDA INSTALL NOT AVAILABLE)
   - pip:
-    - -e .         # install git checkout of databooth package (this repo) in editable mode
-    - rich[jupyter]
-
-
-
-
+  - rich[jupyter]
+  #  - -e .         # install git checkout of databooth package (this repo) in editable mode
