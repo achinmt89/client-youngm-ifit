@@ -1,0 +1,38 @@
+channels:
+  - conda-forge
+  - defaults
+  - fastai
+dependencies:
+  - python >=3.8,<3.9
+  - pip
+  # BASICS
+  - deon    # Data ethics checklist
+  - numpy
+  - scipy
+  - pandas
+  # JUPYTER - LAB, NOTEBOOK, IPYKERNEL
+  - jupyterlab 
+  - ipykernel
+  # OTHER
+  - httpx
+  - rich
+  # DEVELOPMENT ONLY PACKAGES (could also be kept in a separate environment file)
+  - pytest
+  - pytest-cov
+  - tox
+  - pre_commit
+  - sphinx
+  - recommonmark
+  # COULD BE INSTALLED VIA PIPX INSTEAD
+  - datasette
+  - sqlite-utils
+  - pyscaffold
+  - pyscaffoldext-dsproject
+  # PIP INSTALLS (CONDA INSTALL NOT AVAILABLE)
+  - pip:
+    - -e .         # install git checkout of databooth package (this repo) in editable mode
+    - rich[jupyter]
+
+
+
+
