@@ -31,6 +31,9 @@ st.set_page_config(page_title=APP_NAME, layout='wide')
 IMAGE_PATH = 'st-app/resources'
 IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
 
+def 
+ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
+
 class SideBar:
     app_name = APP_NAME
     datasource = DATA_INFO

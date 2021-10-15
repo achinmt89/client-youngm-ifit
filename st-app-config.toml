@@ -7,7 +7,7 @@ LAYOUT = 'wide'
 
 [S3] # Cloud Object Storage: https://console.scaleway.com
 ACCESS_KEY_ID = 'SCW5MSNHMS37P6Q0ZZV2'   # Credentials
-SECRET_ACCESS_KEY = 'app-secrets.toml'
+SECRET_ACCESS_TOML = 'st-app-secrets.toml'
 STORAGE_BUCKET_NAME = 'client-youngm-ifit'
 DEFAULT_ACL = 'public-read'
 REGION_NAME = 'fr-par'
