@@ -1,0 +1,11 @@
+name: client-youngm-ifit
+channels:
+  - conda-forge
+  - fastai
+dependencies:
+  - python
+  - pip
+  - streamlit
+# - streamlit-folium
+# - pip:
+#   - TODO
