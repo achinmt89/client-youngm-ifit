@@ -1,10 +1,20 @@
 name: client-youngm-ifit
 channels:
   - conda-forge
+  - defaults
   - fastai
 dependencies:
-  - python
+  - python >=3.8,<3.9
   - pip
+  # Essentials
+  - deon    # Data ethics checklist
+  - numpy
+  - scipy
+  - pandas
+  # Jupyter - Lab, Notebook, ipykernel
+  - jupyterlab 
+  - ipykernel
+  # Streamlit and friends
   - streamlit
 # - streamlit-folium
 # - pip:
