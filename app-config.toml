@@ -1,0 +1,14 @@
+[APP]
+DATASOURCE = 'Data provided by Client (CSV)'
+AUTHOR = '[Aaron Chin @ DataBooth.com.au](https://www.databooth.com.au)'
+NAME = 'iFit - Data converter app' 
+CACHED_DATAFILE = 'TBA.format'
+LAYOUT = 'wide'
+
+[S3] # Cloud Object Storage: https://console.scaleway.com
+ACCESS_KEY_ID = 'SCW5MSNHMS37P6Q0ZZV2'   # Credentials
+SECRET_ACCESS_KEY = 'app-secrets.toml'
+STORAGE_BUCKET_NAME = 'client-youngm-ifit'
+DEFAULT_ACL = 'public-read'
+REGION_NAME = 'fr-par'
+ENDPOINT_URL = 'https://s3.fr-par.scw.cloud'
