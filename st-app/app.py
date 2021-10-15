@@ -1,8 +1,6 @@
-##__all__ = ['DATA_INFO', 'AUTHOR_INFO', 'APP_NAME', 'CACHED_WALK_DATA', 'plot_walk', 'plot_entire_walk',
-##           'plot_walk_points', 'SideBar', 'app_sidebar', 'IMAGE_PATH', 'IMAGE_PATH', 'WALK_NAME', 'WALK_NAME',
-##           'load_cached_walking_data', 'app_mainscreen', 'notebook_mainscreen', 'sb']
-
-# Cell
+##__all__ = ['DATA_INFO', 'AUTHOR_INFO', 'APP_NAME', 
+##            'SideBar', 'app_sidebar', 'IMAGE_PATH', 
+##           'load_cached_data', 'app_mainscreen', 'sb']
 
 import numpy as np
 import pandas as pd
@@ -14,7 +12,6 @@ import streamlit as st
 from PIL import Image
 from IPython.display import display
 
-
 # TODO: Following is a hack to fix issue with import paths using in notebook vs. script
 
 # try:
@@ -22,48 +19,48 @@ from IPython.display import display
 # except:
 #    from datapipe import load_and_cache_raw_data
 
+# TODO: Link in read .toml config & secrets
 
-DATA_INFO = 'TODO'
-AUTHOR_INFO = 'TODO'
-APP_NAME = 'TODO'
-CACHED_WALK_DATA = 'TODO'
+DATA_INFO = 'Supplied by Client (YoungM)'
+AUTHOR_INFO = 'Aaron Chin @ DataBooth.com.au'
+APP_NAME = "iFit Data Conversion app"
+CACHED_DATA = 'TODO: Data cache file'
 
 st.set_page_config(page_title=APP_NAME, layout='wide')
 
-# IMAGE_PATH = 'emmaus_walking/resources'
-# IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
+IMAGE_PATH = 'st-app/resources'
+IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
 
 class SideBar:
+    app_name = APP_NAME
     datasource = DATA_INFO
     datasize = 0   # TODO: Look to calculate this (in GB)
     author = AUTHOR_INFO
     data_title = 'Data details...'
     data_local = False
     today_date = dt.date.today()
+    file_name = "Select CSV file..."
 #   end_date = dt.date.today()
 #    selected_data = None
 
 
 def app_sidebar(APP_NAME):
-
     sb = SideBar()
-
-    st.sidebar.info(APP_NAME)
-
+    st.sidebar.info(APP_NAME + ": Menu")
     col1, col2 = st.sidebar.beta_columns(2)
 
     with col1:
-#        image1 = Image.open(IMAGE_PATH/'AppleWatchExercise.jpeg').resize((144, 144))  # NOTE: resize done here
-#        st.image(image=image1, use_column_width=True, output_format='JPEG')
+        st.write(IMAGE_PATH)
+        #mage1 = Image.open(IMAGE_PATH/'AppleWatchExercise.jpeg').resize((144, 144))  # NOTE: resize done here
+        #st.image(image=image1, use_column_width=True, output_format='JPEG')
     with col2:
-#        image2 = Image.open(IMAGE_PATH/'HealthFitLogo.png')
-#        st.image(image=image2, use_column_width=True, output_format='PNG')
+        st.markdown("## TODO")
+        #image2 = Image.open(IMAGE_PATH/'HealthFitLogo.png')
+        #st.image(image=image2, use_column_width=True, output_format='PNG')
 
     st.sidebar.markdown(sb.author)
-    sb.file_name = st.sidebar.file_uploader()
 
     return sb
-
 
 
 # @st.cache
@@ -73,9 +70,17 @@ def load_and_cache_data():
 
 
 def app_mainscreen(APP_NAME, sb):
+    st.header(APP_NAME)
+    st.write("Today's date: " + str(sb.today_date))
+    st.write()
+    csv_file_name = st.file_uploader("Name of CSV data file to convert?")
 
-    st.header(sb.file_name)
-    data_df = load_cached_walking_data()
-    sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
+#    data_df = load_cached_walking_data()
+#    sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
 
-    return data_df
+#    return data_df
+    return csv_file_name
+
+sb = app_sidebar(APP_NAME)
+
+app_mainscreen(APP_NAME, sb)
