@@ -1,9 +1,13 @@
 # Secrets
 st-app-secrets.toml
 
-# Data should not go to GitHun but S3
+# Data should not go to GitHub but S3
 *.tcx
 *.csv
+*.sqlite
+
+# Reports with confidential data
+*-private.html
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
