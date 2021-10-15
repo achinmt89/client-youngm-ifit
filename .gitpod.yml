@@ -41,9 +41,9 @@ tasks:
       rm /workspace/Mambaforge3-Linux-x86_64.sh
       /workspace/miniforge3/bin/conda init bash
       source ~/.bashrc
-      mamba env create --file environment.yml -n dbooth
+      mamba env create --file environment-mamba.yml -n client-youngm-ifit
       conda activate dbooth
-      python -m ipykernel install --user --name=dbooth
+      python -m ipykernel install --user --name=client-youngm-ifit
       conda -V && python -V
 
 ## Currently 'dbooth' chooses to be a python 3.8 environment
