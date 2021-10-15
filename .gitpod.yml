@@ -42,7 +42,7 @@ tasks:
       /workspace/miniforge3/bin/conda init bash
       source ~/.bashrc
       mamba env create --file environment-mamba.yml -n client-youngm-ifit
-      conda activate dbooth
+      conda activate client-youngm-ifit
       python -m ipykernel install --user --name=client-youngm-ifit
       conda -V && python -V
 
