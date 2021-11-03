@@ -34,6 +34,17 @@ IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
 def 
 ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
 
+def convert_csv_row_to_xml(row):
+    return """<Time>%s</Time>
+    <Miles>%s</Miles>
+    <MPH>%s</MPH>
+    <Watts>%s</Watts>
+    <HR>%s</HR>
+    <RPM>%s</RPM>
+    <Resistance>%s</Resistance>
+    <Relative Resistance>%s</Relative Resistance>
+    <Incline>%s</Incline>""" % (row.Time, row.Miles, row.MPH, row.Watts, row.HR, row.RPM, row.Resistance, row.RelativeResistance, row.Incline)
+
 class SideBar:
     app_name = APP_NAME
     datasource = DATA_INFO
@@ -78,11 +89,22 @@ def app_mainscreen(APP_NAME, sb):
     st.write()
     csv_file_name = st.file_uploader("Name of CSV data file to convert?")
 
+    # import data
+    data_df = pd.read_csv(csv_file_name, skiprows=2)
+    data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
+    
+    new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
+    
 #    data_df = load_cached_walking_data()
 #    sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
 
 #    return data_df
     return csv_file_name
+
+show_raw = st.checkbox("Show raw data")
+if show_raw:
+    st.write(data_df)
+    st.write(new_tcx)
 
 sb = app_sidebar(APP_NAME)
 
