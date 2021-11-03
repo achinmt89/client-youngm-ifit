@@ -31,8 +31,18 @@ st.set_page_config(page_title=APP_NAME, layout='wide')
 IMAGE_PATH = 'st-app/resources'
 IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
 
-def 
-ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
+#def ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
+
+def convert_csv_row_to_xml(row):
+    return """<Time>%s</Time>
+    <Miles>%s</Miles>
+    <MPH>%s</MPH>
+    <Watts>%s</Watts>
+    <HR>%s</HR>
+    <RPM>%s</RPM>
+    <Resistance>%s</Resistance>
+    <Relative Resistance>%s</Relative Resistance>
+    <Incline>%s</Incline>""" % (row.Time, row.Miles, row.MPH, row.Watts, row.HR, row.RPM, row.Resistance, row.RelativeResistance, row.Incline)
 
 def convert_csv_row_to_xml(row):
     return """<Time>%s</Time>
@@ -98,8 +108,14 @@ def app_mainscreen(APP_NAME, sb):
 #    data_df = load_cached_walking_data()
 #    sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
 
+    show_raw = st.checkbox("Show raw data")
+    if show_raw:
+        st.write(data_df)
+        st.write(new_tcx)
+
 #    return data_df
     return csv_file_name
+    
 
 show_raw = st.checkbox("Show raw data")
 if show_raw:
