@@ -98,29 +98,32 @@ def app_mainscreen(APP_NAME, sb):
     st.write("Today's date: " + str(sb.today_date))
     st.write()
     csv_file_name = st.file_uploader("Name of CSV data file to convert?")
-
+    # tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge")
+    
     # import data
     data_df = pd.read_csv(csv_file_name, skiprows=2)
     data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
     
     new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
     
-#    data_df = load_cached_walking_data()
-#    sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
+    #data_df = load_cached_walking_data()
+    #sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
+    
+    # joining tcx
+    #TCXFILE = pd.read_xml(tcx_file_name)
 
+    #with open(TCXFILE, "a") as tcxwrite: 
+        #for line in new_tcx:
+            #tcxwrite.write(line)
+            
     show_raw = st.checkbox("Show raw data")
     if show_raw:
         st.write(data_df)
         st.write(new_tcx)
+        #st.write(TCXFILE)
 
-#    return data_df
+    # return data_df
     return csv_file_name
-    
-
-show_raw = st.checkbox("Show raw data")
-if show_raw:
-    st.write(data_df)
-    st.write(new_tcx)
 
 sb = app_sidebar(APP_NAME)
 
