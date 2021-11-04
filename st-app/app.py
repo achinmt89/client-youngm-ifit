@@ -102,7 +102,6 @@ def app_mainscreen(APP_NAME, sb):
     #st.write("Today's date: " + str(sb.today_date))
     #st.file_uploader
     csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv'])
-    # tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge")
     
     # st.write(csv_file_name)
     
@@ -114,6 +113,8 @@ def app_mainscreen(APP_NAME, sb):
 
     
     data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
+
+    tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx'])
 
     new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
     
@@ -127,11 +128,15 @@ def app_mainscreen(APP_NAME, sb):
         #for line in new_tcx:
             #tcxwrite.write(line)
             
-    show_raw = st.checkbox("Show raw data")
-    if show_raw:
+    show_raw_csv = st.checkbox("Show raw CSV data")
+    if show_raw_csv:
         st.write(data_df)
-        st.write(new_tcx)
+        #st.write(new_tcx)
         #st.write(TCXFILE)
+
+    show_raw_xml = st.checkbox("Show raw XML data")
+    if show_raw_xml:
+        st.write(new_tcx)
 
     # return data_df
     return csv_file_name
@@ -139,3 +144,10 @@ def app_mainscreen(APP_NAME, sb):
 sb = app_sidebar(APP_NAME)
 
 app_mainscreen(APP_NAME, sb)
+
+# TODO: display XML bug?
+# TODO: join tcx to csv on date/time?
+# TODO: define testing
+# TODO: do testing
+# TODO: complete documentation
+# TODO: refactor and retest
