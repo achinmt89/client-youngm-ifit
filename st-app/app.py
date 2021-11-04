@@ -25,11 +25,14 @@ DATA_INFO = 'Supplied by Client (YoungM)'
 AUTHOR_INFO = 'Aaron Chin @ DataBooth.com.au'
 APP_NAME = "iFit Data Conversion app"
 CACHED_DATA = 'TODO: Data cache file'
+CLIENT_NAME = 'Mick Young'
 
 st.set_page_config(page_title=APP_NAME, layout='wide')
 
-IMAGE_PATH = 'st-app/resources'
-IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
+AVATAR_URL = "https://www.w3schools.com/howto/img_avatar.png"
+IFIT_BRAND_URL = "https://images.contentstack.io/v3/assets/blt1d89a78b502b83f3/blt000cfbfbc534f253/615468f7c3934450a14e3233/img_bikes_hero_dsk.jpg?q=90"
+#IMAGE_PATH = 'st-app/resources'
+#IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
 
 #def ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
 
@@ -57,6 +60,7 @@ def convert_csv_row_to_xml(row):
 
 class SideBar:
     app_name = APP_NAME
+    client_name = CLIENT_NAME
     datasource = DATA_INFO
     datasize = 0   # TODO: Look to calculate this (in GB)
     author = AUTHOR_INFO
@@ -70,15 +74,15 @@ class SideBar:
 
 def app_sidebar(APP_NAME):
     sb = SideBar()
-    st.sidebar.info(APP_NAME + ": Menu")
-    col1, col2 = st.sidebar.beta_columns(2)
+    st.sidebar.info("Menu")
+    # col1, col2 = st.sidebar.beta_columns(2)
 
-    with col1:
-        st.write(IMAGE_PATH)
+    #with col1:
+        #st.write(IMAGE_URL)
         #mage1 = Image.open(IMAGE_PATH/'AppleWatchExercise.jpeg').resize((144, 144))  # NOTE: resize done here
-        #st.image(image=image1, use_column_width=True, output_format='JPEG')
-    with col2:
-        st.markdown("## TODO")
+    st.sidebar.image(image=IFIT_BRAND_URL, use_column_width=True, output_format='PNG')
+    #with col2:
+        #st.markdown("## TODO")
         #image2 = Image.open(IMAGE_PATH/'HealthFitLogo.png')
         #st.image(image=image2, use_column_width=True, output_format='PNG')
 
@@ -94,16 +98,23 @@ def load_and_cache_data():
 
 
 def app_mainscreen(APP_NAME, sb):
-    st.header(APP_NAME)
-    st.write("Today's date: " + str(sb.today_date))
-    st.write()
-    csv_file_name = st.file_uploader("Name of CSV data file to convert?")
+    st.header(APP_NAME + " // " + CLIENT_NAME)
+    #st.write("Today's date: " + str(sb.today_date))
+    #st.file_uploader
+    csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv'])
     # tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge")
     
-    # import data
-    data_df = pd.read_csv(csv_file_name, skiprows=2)
-    data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
+    # st.write(csv_file_name)
     
+    # import data
+    data_df = pd.DataFrame()
+
+    if csv_file_name is not None:
+        data_df = pd.read_csv(csv_file_name, skiprows=2)
+
+    
+    data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
+
     new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
     
     #data_df = load_cached_walking_data()
