@@ -159,6 +159,9 @@ def app_mainscreen(APP_NAME, sb):
     if show_raw_xml:
         st.write(tcx_df)
 
+    # merging the two
+    # have to figure out a way to minus time 0 from time 1 in the tcx file - it just comes out as the time and seconds
+    # pd.merge(tcx_df, data_df, on = "Time")
 
 sb = app_sidebar(APP_NAME)
 
