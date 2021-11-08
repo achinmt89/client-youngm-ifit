@@ -5,9 +5,11 @@
 import numpy as np
 import pandas as pd
 import datetime as dt
+import csv
 
 from pathlib import Path
 import streamlit as st
+from xml.etree import ElementTree as et
 
 from PIL import Image
 from IPython.display import display
@@ -110,36 +112,53 @@ def app_mainscreen(APP_NAME, sb):
 
     if csv_file_name is not None:
         data_df = pd.read_csv(csv_file_name, skiprows=2)
-
+# created a data frame from the csv.
     
     data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
 
+    show_raw_csv = st.checkbox("Show raw CSV data")
+    if show_raw_csv:
+        st.write(data_df)
+            #st.write(new_tcx)
+            #st.write(TCXFILE)
+
+
+# IMPORT TCX
     tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx'])
 
-    new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
+    #new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
     
     #data_df = load_cached_walking_data()
     #sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
     
-    # joining tcx
-    #TCXFILE = pd.read_xml(tcx_file_name)
+    # CONVERT TCX to CSV - instead let's just make tcx into a pandas data frame.
+    xtree = et.parse(tcx_file_name)
+    xroot = xtree.getroot() 
 
-    #with open(TCXFILE, "a") as tcxwrite: 
-        #for line in new_tcx:
-            #tcxwrite.write(line)
-            
-    show_raw_csv = st.checkbox("Show raw CSV data")
-    if show_raw_csv:
-        st.write(data_df)
-        #st.write(new_tcx)
-        #st.write(TCXFILE)
+    df_cols = ["DistanceMeters", "Cadence", "Calories", "HeartRateBPM", "Time", "AltitudeMeters", "LongitudeDegrees", "LatitudeDegrees"]
+    rows = []
+
+    for node in xroot: 
+        DistanceMeters = node.find("DistanceMeters").text if node is not None else None
+        Cadence = node.find("Cadence").text if node is not None else None
+        Calories = node.find("Calories").text if node is not None else None
+        HeartRateBPM = node.find("HeartRateBPM").text if node is not None else None
+        Time = node.attrib.get("Time").text if node is not None else None
+        AltitudeMeters = node.find("AltitudeMeters").text if node is not None else None
+        LongitudeDegrees = node.find("LongitudeDegrees").text if node is not None else None
+        LatitudeDegrees = node.find("LatitudeDegrees").text if node is not None else None
+        
+        rows.append({"DistanceMeters": DistanceMeters, "Cadence": Cadence, 
+                    "Calories": Calories, "HeartRateBPM": HeartRateBPM,
+                    "Time": Time, "AltitudeMeters": AltitudeMeters, 
+                    "LongitudeDegrees": LongitudeDegrees, "LatitudeDegrees": LatitudeDegrees})
+
+    tcx_df = pd.DataFrame(rows, columns = df_cols)
 
     show_raw_xml = st.checkbox("Show raw XML data")
     if show_raw_xml:
-        st.write(new_tcx)
+        st.write(tcx_df)
 
-    # return data_df
-    return csv_file_name
 
 sb = app_sidebar(APP_NAME)
 
@@ -151,3 +170,7 @@ app_mainscreen(APP_NAME, sb)
 # TODO: do testing
 # TODO: complete documentation
 # TODO: refactor and retest
+
+
+# https://medium.com/analytics-vidhya/converting-xml-data-to-csv-format-using-python-3ea09fa18d38
+# https://www.geeksforgeeks.org/convert-xml-to-csv-in-python/
