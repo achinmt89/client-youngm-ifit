@@ -5,9 +5,11 @@
 import numpy as np
 import pandas as pd
 import datetime as dt
+import csv
 
 from pathlib import Path
 import streamlit as st
+from xml.etree import ElementTree
 
 from PIL import Image
 from IPython.display import display
@@ -121,6 +123,81 @@ def app_mainscreen(APP_NAME, sb):
     #data_df = load_cached_walking_data()
     #sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
     
+    # CONVERT TCX to CSV
+    tree = ElementTree.parse(tcx_file_name)
+
+    output_tcx = open(tcx_file_name, w, newline = '', encoding= 'utf-8')
+    csv_writer = csv.writer(tcx_file_name)
+
+    col_names = ['DistanceMeters', 'Cadence', 'Calories', 'HeartRateBPM', 'Time', 'AltitudeMeters', 'LongitudeDegrees', 'LatitudeDegrees']
+    csvwriter.writerow(col_names)
+    #rows = []
+
+    root = tree.getroot()
+
+    for eventData in root.findall('eventData'):
+        event_data = []
+        event = eventData.find('event')
+
+        DistanceMeters = event.find("DistanceMeters")
+        if DistanceMeters != None:
+            DistanceMeters = DistanceMeters.text
+        event_data.append(DistanceMeters)
+
+        Cadence = event.find("Cadence")
+        if Cadence != None:
+            Cadence = Cadence.text
+        event_data.append(Cadence)
+
+        Calories = event.find("Calories")
+        if Calories != None:
+            Calories = Calories.text
+        event_data.append(Calories)
+
+        HeartRateBPM = event.find("HeartRateBPM")
+        if HeartRateBPM != None:
+            HeartRateBPM = HeartRateBPM.text
+        event_data.append(HeartRateBPM)
+
+        Time = event.find("Time")
+        if Time != None:
+            Time = Time.text
+        event_data.append(Time)
+
+        AltitudeMeters = event.find("AltitudeMeters")
+        if AltitudeMeters != None:
+            AltitudeMeters = AltitudeMeters.text
+        event_data.append(AltitudeMeters)
+
+        LongitudeDegrees = event.find("LongitudeDegrees")
+        if LongitudeDegrees != None:
+            LongitudeDegrees = LongitudeDegrees.text
+        event_data.append(LongitudeDegrees)
+
+        LatitudeDegrees = event.find("LatitudeDegrees")
+        if LatitudeDegrees != None:
+            LatitudeDegrees = LatitudeDegrees.text
+        event_data.append(LatitudeDegrees)
+
+        csvwriter.writerow(event_data)
+
+    output_csv.close()
+
+    csv_df = pd.read_csv(tcx_file_name)
+
+        #rows.append({"DistanceMeters":DistanceMeters,
+        #"Cadence": Cadence,
+        #"Calories": Calories,
+        #"HeartRateBPM": HeartRateBPM,
+        #"Time": Time,
+        #"AltitudeMeters": AltitudeMeters,
+        #"LongitudeDegrees": LongitudeDegrees,
+        #"LatitudeDegrees": LatitudeDegrees})
+
+   # df = pd.DataFrame(rows, col_names)
+
+    df.to_csv('output.csv')
+
     # joining tcx
     #TCXFILE = pd.read_xml(tcx_file_name)
 
@@ -151,3 +228,7 @@ app_mainscreen(APP_NAME, sb)
 # TODO: do testing
 # TODO: complete documentation
 # TODO: refactor and retest
+
+
+# https://medium.com/analytics-vidhya/converting-xml-data-to-csv-format-using-python-3ea09fa18d38
+# https://www.geeksforgeeks.org/convert-xml-to-csv-in-python/
