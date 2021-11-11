@@ -43,7 +43,7 @@ def get_tcx_lap_data(lap: lxml.etree._Element) -> Dict[str, Union[float, datetim
     distance_elem = lap.find('ns:DistanceMeters', NAMESPACES)
     if distance_elem is not None:
         data['distance'] = float(distance_elem.text)
-    
+
     total_time_elem = lap.find('ns:TotalTimeSeconds', NAMESPACES)
     if total_time_elem is not None:
         data['total_time'] = timedelta(seconds=float(total_time_elem.text))
@@ -59,6 +59,19 @@ def get_tcx_lap_data(lap: lxml.etree._Element) -> Dict[str, Union[float, datetim
     avg_hr_elem = lap.find('ns:AverageHeartRateBpm', NAMESPACES)
     if avg_hr_elem is not None:
         data['avg_hr'] = float(avg_hr_elem.find('ns:Value', NAMESPACES).text)
+
+    calories_elem = lap.find('ns:Calories', NAMESPACES)
+    if calories_elem is not None:
+        data['calories'] = float(calories_elem.find('ns:Value', NAMESPACES).text)
+
+    intensity_elem = lap.find('ns:Intensity', NAMESPACES)
+    if intensity_elem is not None:
+        data['intensity'] = float(intensity_elem.find('ns:Value', NAMESPACES).text)
+
+    trigger_method_elem = lap.find('ns:TriggerMethod', NAMESPACES)
+    if trigger_method_elem is not None:
+        data['trigger_method'] = float(trigger_method_elem.find('ns:Value', NAMESPACES).text)
+
     
     return data
 
