@@ -22,10 +22,10 @@ NAMESPACES = {
 }
 
 # The names of the columns we will use in our points DataFrame
-POINTS_COLUMN_NAMES = ['latitude', 'longitude', 'elevation', 'time', 'heart_rate', 'cadence', 'speed', 'lap']
+POINTS_COLUMN_NAMES = ['distance', 'cadence', 'calories', 'hr', 'time', 'latitude', 'longitude']
 
 # The names of the columns we will use in our laps DataFrame
-LAPS_COLUMN_NAMES = ['number', 'start_time', 'distance', 'total_time', 'max_speed', 'max_hr', 'avg_hr']
+LAPS_COLUMN_NAMES = ['start_time', 'total_time', 'distance' 'max_speed', 'calories', 'avg_hr', 'max_hr', 'intensity', 'trigger_method']
 
 def get_tcx_lap_data(lap: lxml.etree._Element) -> Dict[str, Union[float, datetime, timedelta, int]]:
     """Extract some data from an XML element representing a lap and
@@ -150,3 +150,5 @@ if __name__ == '__main__':
     print('\nPOINTS:')
     print(points_df)
     
+
+# adapt it to our code
