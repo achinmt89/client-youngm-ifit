@@ -20,16 +20,55 @@ from pathlib import Path
 
 
 # %%
-DATAFILE_PATH = "data"
-DATAFILE_CSV  = "2021_09_10_15_09_Sassafras_Power_Climb,_Sunset,_South_Carolina.csv"
+# DATASOURCE_TYPE = "local"  # Local machine
+DATASOURCE_TYPE = "gh"     # Github - Synthetic or non-PII data only
+
+#TODO: Need to check that both local and remote (in this instance Github.com) data modes work
 
 
 # %%
-DATAFILE = Path(DATAFILE_PATH) / DATAFILE_CSV
+DATAFILE_PATH = "data"
+DATAFILE_CSV  = "2021_09_10_15_09_Sassafras_Power_Climb,_Sunset,_South_Carolina.csv"
+
+# DATAFILE_URL = "https://raw.githubusercontent.com/DataBooth/client-youngm-ifit/main/data/" + "2021_09_10_15_09_Sassafras_Power_Climb%2C_Sunset%2C_South_Carolina.csv"
+
+DATAFILE_URL_PATH = "https://raw.githubusercontent.com/DataBooth/client-youngm-ifit/main/data/" 
+DATAFILE_URL = DATAFILE_URL_PATH + DATAFILE_CSV.replace(",", "%2C")
+
+
+# %%
+# print(DATAFILE_URL)
+
+
+# %%
+def set_local_or_remote_data_path(datasource_type):
+  if datasource_type ==  "local":
+    datafile = Path(DATAFILE_PATH) / DATAFILE_CSV
+    print("Local datasource: " + datafile.as_posix())
+    tcxfile = Path(DATAFILE_PATH) / DATAFILE_CSV.replace("csv", "tcx")
+    print("TCX file to be created: " + tcxfile.as_posix())
+    return datafile, tcxfile
+  elif datasource_type == "gh":
+    datafile = DATAFILE_URL
+    print("Remote datasource: " + datafile)
+    tcxfile = DATAFILE_CSV.replace("csv", "tcx")
+    print("TCX file to be created: " + tcxfile)
+    return datafile, tcxfile
+  else:
+    print("ERROR: Unknown `datasource_type`")
+  return None
+
+  #TODO: Aaron - we can refactor further 
+
+
+# %%
+datafile, tcxfile = set_local_or_remote_data_path(DATASOURCE_TYPE)
 
 
 # %%
 # DATAFILE
+
+#TODO: Aaron we can re-factor this together if you'd like 
 
 
 # %%
@@ -39,7 +78,7 @@ DATAFILE = Path(DATAFILE_PATH) / DATAFILE_CSV
 # %%
 # How to read csv
 
-data_df = pd.read_csv(DATAFILE, skiprows=2)
+data_df = pd.read_csv(datafile, skiprows=2)
 print(data_df.head())
 
 # How to read xml
@@ -79,15 +118,12 @@ new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
 # %%
 # Join modified XML file to original TCX file
 
-TCXFILE = Path(DATAFILE_PATH) / DATAFILE_CSV.replace("csv", "tcx")
+
+# TCXFILE = Path(DATAFILE_PATH) / DATAFILE_CSV.replace("csv", "tcx") - see above
 
 
 # %%
-TCXFILE
-
-
-# %%
-with open(TCXFILE, "a") as tcxwrite: 
+with open(tcxfile, "a+") as tcxwrite: 
   for line in new_tcx:
     tcxwrite.write(line)
 
@@ -95,7 +131,7 @@ with open(TCXFILE, "a") as tcxwrite:
 # %%
 #!tail -40 $TCXFILE - convert to actual .py code for compatibility between notebook & script
 
-get_ipython().system('tail -40 ' + TCXFILE.as_posix())
+get_ipython().system('tail -40 ' + tcxfile)
 
 # %% [markdown]
 # ## References
