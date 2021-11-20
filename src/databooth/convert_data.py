@@ -1,7 +1,7 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
-from IPython import get_ipython
+from IPython import get_ipython #AChin: Want to avoid use of this probs in non-notebook
 
 # %% [markdown]
 # ## Convert Mick's movement data
@@ -41,17 +41,17 @@ DATAFILE_URL = DATAFILE_URL_PATH + DATAFILE_CSV.replace(",", "%2C")
 
 
 # %%
-def set_local_or_remote_data_path(datasource_type):
+def set_local_or_remote_data_path(datasource_type, datafile_path, datafile_csv, datafile_url):
   if datasource_type ==  "local":
-    datafile = Path(DATAFILE_PATH) / DATAFILE_CSV
+    datafile = Path(datafile_path) / datafile_csv
     print("Local datasource: " + datafile.as_posix())
-    tcxfile = Path(DATAFILE_PATH) / DATAFILE_CSV.replace("csv", "tcx")
+    tcxfile = Path(datafile_path) / datafile_csv.replace("csv", "tcx")
     print("TCX file to be created: " + tcxfile.as_posix())
     return datafile, tcxfile
   elif datasource_type == "gh":
-    datafile = DATAFILE_URL
+    datafile = datafile_url
     print("Remote datasource: " + datafile)
-    tcxfile = DATAFILE_CSV.replace("csv", "tcx")
+    tcxfile = datafile_csv.replace("csv", "tcx")
     print("TCX file to be created: " + tcxfile)
     return datafile, tcxfile
   else:
@@ -62,7 +62,7 @@ def set_local_or_remote_data_path(datasource_type):
 
 
 # %%
-datafile, tcxfile = set_local_or_remote_data_path(DATASOURCE_TYPE)
+datafile, tcxfile = set_local_or_remote_data_path(DATASOURCE_TYPE, DATAFILE_PATH, DATAFILE_CSV, DATAFILE_URL)
 
 
 # %%
@@ -131,7 +131,7 @@ with open(tcxfile, "a+") as tcxwrite:
 # %%
 #!tail -40 $TCXFILE - convert to actual .py code for compatibility between notebook & script
 
-get_ipython().system('tail -40 ' + tcxfile)
+# get_ipython().system('tail -40 ' + tcxfile)
 
 # %% [markdown]
 # ## References

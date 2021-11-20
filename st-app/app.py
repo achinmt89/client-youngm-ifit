@@ -35,8 +35,14 @@ st.set_page_config(page_title=APP_NAME, layout='wide')
 
 AVATAR_URL = "https://www.w3schools.com/howto/img_avatar.png"
 IFIT_BRAND_URL = "https://images.contentstack.io/v3/assets/blt1d89a78b502b83f3/blt000cfbfbc534f253/615468f7c3934450a14e3233/img_bikes_hero_dsk.jpg?q=90"
+
 #IMAGE_PATH = 'st-app/resources'
 #IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
+
+DATAFILE_PATH = "data"
+DATAFILE_CSV  = "2021_09_10_15_09_Sassafras_Power_Climb,_Sunset,_South_Carolina.csv"
+DATAFILE_URL_PATH = "https://raw.githubusercontent.com/DataBooth/client-youngm-ifit/main/data/" 
+DATAFILE_URL = DATAFILE_URL_PATH + DATAFILE_CSV.replace(",", "%2C")
 
 #def ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
 
@@ -66,32 +72,17 @@ class SideBar:
     app_name = APP_NAME
     client_name = CLIENT_NAME
     datasource = DATA_INFO
-    datasize = 0   # TODO: Look to calculate this (in GB)
     author = AUTHOR_INFO
     data_title = 'Data details...'
     data_local = False
-    today_date = dt.date.today()
     file_name = "Select CSV file..."
-#   end_date = dt.date.today()
-#    selected_data = None
 
 
 def app_sidebar(APP_NAME):
     sb = SideBar()
     st.sidebar.info("Menu")
-    # col1, col2 = st.sidebar.beta_columns(2)
-
-    #with col1:
-        #st.write(IMAGE_URL)
-        #mage1 = Image.open(IMAGE_PATH/'AppleWatchExercise.jpeg').resize((144, 144))  # NOTE: resize done here
     st.sidebar.image(image=IFIT_BRAND_URL, use_column_width=True, output_format='PNG')
-    #with col2:
-        #st.markdown("## TODO")
-        #image2 = Image.open(IMAGE_PATH/'HealthFitLogo.png')
-        #st.image(image=image2, use_column_width=True, output_format='PNG')
-
     st.sidebar.markdown(sb.author)
-
     return sb
 
 
@@ -103,63 +94,67 @@ def load_and_cache_data():
 
 def app_mainscreen(APP_NAME, sb):
     st.header(APP_NAME + " // " + CLIENT_NAME)
-    #st.write("Today's date: " + str(sb.today_date))
-    #st.file_uploader
-    csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv'])
+
+    if sb.data_local == True:
+        csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv'])
+
+    # IMPORT TCX
+        tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx'])
+
+        #new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
     
-    # st.write(csv_file_name)
-    
+    else:
+        DATASOURCE_TYPE = "gh"
+        csv_file_name, tcx_file_name = set_local_or_remote_data_path(DATASOURCE_TYPE, DATAFILE_PATH, DATAFILE_CSV, DATAFILE_URL)
+
+    # CONVERT TCX to CSV - instead let's just make tcx into a pandas data frame
+
     # import data
     data_df = pd.DataFrame()
 
     if csv_file_name is not None:
         data_df = pd.read_csv(csv_file_name, skiprows=2)
-# created a data frame from the csv.
-    
+
     data_df.rename(columns={"Relative Resistance": "RelativeResistance"}, inplace=True)
 
     show_raw_csv = st.checkbox("Show raw CSV data")
     if show_raw_csv:
         st.write(data_df)
-            #st.write(new_tcx)
-            #st.write(TCXFILE)
 
+    if tcx_file_name is not None:
+        st.write(tcx_file_name)
 
-# IMPORT TCX
-    tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx'])
+        try:    
+            xtree = et.parse(tcx_file_name)
+            xroot = xtree.getroot() 
 
-    #new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
-    
-    #data_df = load_cached_walking_data()
-    #sb.datasize = data_df.memory_usage(deep=True).sum() / 1024 / 1024
-    
-    # CONVERT TCX to CSV - instead let's just make tcx into a pandas data frame.
-    xtree = et.parse(tcx_file_name)
-    xroot = xtree.getroot() 
+            df_cols = ["DistanceMeters", "Cadence", "Calories", "HeartRateBPM", "Time", "AltitudeMeters", "LongitudeDegrees", "LatitudeDegrees"]
+            rows = []
 
-    df_cols = ["DistanceMeters", "Cadence", "Calories", "HeartRateBPM", "Time", "AltitudeMeters", "LongitudeDegrees", "LatitudeDegrees"]
-    rows = []
+            for node in xroot: 
+                DistanceMeters = node.find("DistanceMeters").text if node is not None else None
+                Cadence = node.find("Cadence").text if node is not None else None
+                Calories = node.find("Calories").text if node is not None else None
+                HeartRateBPM = node.find("HeartRateBPM").text if node is not None else None
+                Time = node.attrib.get("Time").text if node is not None else None
+                AltitudeMeters = node.find("AltitudeMeters").text if node is not None else None
+                LongitudeDegrees = node.find("LongitudeDegrees").text if node is not None else None
+                LatitudeDegrees = node.find("LatitudeDegrees").text if node is not None else None
+                
+                rows.append({"DistanceMeters": DistanceMeters, "Cadence": Cadence, 
+                            "Calories": Calories, "HeartRateBPM": HeartRateBPM,
+                            "Time": Time, "AltitudeMeters": AltitudeMeters, 
+                            "LongitudeDegrees": LongitudeDegrees, "LatitudeDegrees": LatitudeDegrees})
 
-    for node in xroot: 
-        DistanceMeters = node.find("DistanceMeters").text if node is not None else None
-        Cadence = node.find("Cadence").text if node is not None else None
-        Calories = node.find("Calories").text if node is not None else None
-        HeartRateBPM = node.find("HeartRateBPM").text if node is not None else None
-        Time = node.attrib.get("Time").text if node is not None else None
-        AltitudeMeters = node.find("AltitudeMeters").text if node is not None else None
-        LongitudeDegrees = node.find("LongitudeDegrees").text if node is not None else None
-        LatitudeDegrees = node.find("LatitudeDegrees").text if node is not None else None
-        
-        rows.append({"DistanceMeters": DistanceMeters, "Cadence": Cadence, 
-                    "Calories": Calories, "HeartRateBPM": HeartRateBPM,
-                    "Time": Time, "AltitudeMeters": AltitudeMeters, 
-                    "LongitudeDegrees": LongitudeDegrees, "LatitudeDegrees": LatitudeDegrees})
+            tcx_df = pd.DataFrame(rows, columns = df_cols)
 
-    tcx_df = pd.DataFrame(rows, columns = df_cols)
+            show_raw_xml = st.checkbox("Show raw XML data")
+            if show_raw_xml:
+                st.write(tcx_df)
 
-    show_raw_xml = st.checkbox("Show raw XML data")
-    if show_raw_xml:
-        st.write(tcx_df)
+        except Exception as e:
+            st.write(e)
+
 
     # merging the two
     # have to figure out a way to minus time 0 from time 1 in the tcx file - it just comes out as the time and seconds
