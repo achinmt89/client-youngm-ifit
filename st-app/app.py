@@ -14,7 +14,7 @@ from xml.etree import ElementTree as et
 from PIL import Image
 from IPython.display import display
 
-from src.databooth.convert_data import set_local_or_remote_data_path
+from databooth.convert_data import set_local_or_remote_data_path
 
 # TODO: Following is a hack to fix issue with import paths using in notebook vs. script
 
