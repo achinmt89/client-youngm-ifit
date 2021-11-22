@@ -51,7 +51,7 @@ def set_local_or_remote_data_path(datasource_type, datafile_path, datafile_csv, 
   elif datasource_type == "gh":
     datafile = datafile_url
     print("Remote datasource: " + datafile)
-    tcxfile = datafile_csv.replace("csv", "tcx")
+    tcxfile = datafile.replace("csv", "tcx")
     print("TCX file to be created: " + tcxfile)
     return datafile, tcxfile
   else:
@@ -123,9 +123,9 @@ new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
 
 
 # %%
-with open(tcxfile, "a+") as tcxwrite: 
-  for line in new_tcx:
-    tcxwrite.write(line)
+#with open(tcxfile, "a+") as tcxwrite: 
+#  for line in new_tcx:
+#    tcxwrite.write(line)
 
 
 # %%

@@ -106,7 +106,8 @@ def app_mainscreen(APP_NAME, sb):
     else:
         DATASOURCE_TYPE = "gh"
         csv_file_name, tcx_file_name = set_local_or_remote_data_path(DATASOURCE_TYPE, DATAFILE_PATH, DATAFILE_CSV, DATAFILE_URL)
-
+        st.write("CSV: " + csv_file_name)
+        st.write("TCX: " + tcx_file_name)
     # CONVERT TCX to CSV - instead let's just make tcx into a pandas data frame
 
     # import data
@@ -122,7 +123,7 @@ def app_mainscreen(APP_NAME, sb):
         st.write(data_df)
 
     if tcx_file_name is not None:
-        st.write(tcx_file_name)
+        # st.write(tcx_file_name)
 
         try:    
             xtree = et.parse(tcx_file_name)
