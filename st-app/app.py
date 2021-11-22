@@ -14,14 +14,9 @@ from xml.etree import ElementTree as et
 from PIL import Image
 from IPython.display import display
 
-from databooth.convert_data import set_local_or_remote_data_path
+from databooth.convert_data import set_local_or_remote_data_path, convert_csv_row_to_xml
 
-# TODO: Following is a hack to fix issue with import paths using in notebook vs. script
-
-# try:
-#     from .datapipe import load_and_cache_raw_data
-# except:
-#    from datapipe import load_and_cache_raw_data
+from databooth.parse_tcx import get_tcx_lap_data, get_tcx_point_data, get_dataframes
 
 # TODO: Link in read .toml config & secrets
 
@@ -44,30 +39,7 @@ DATAFILE_CSV  = "2021_09_10_15_09_Sassafras_Power_Climb,_Sunset,_South_Carolina.
 DATAFILE_URL_PATH = "https://raw.githubusercontent.com/DataBooth/client-youngm-ifit/main/data/" 
 DATAFILE_URL = DATAFILE_URL_PATH + DATAFILE_CSV.replace(",", "%2C")
 
-#def ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\"
-
-def convert_csv_row_to_xml(row):
-    return """<Time>%s</Time>
-    <Miles>%s</Miles>
-    <MPH>%s</MPH>
-    <Watts>%s</Watts>
-    <HR>%s</HR>
-    <RPM>%s</RPM>
-    <Resistance>%s</Resistance>
-    <Relative Resistance>%s</Relative Resistance>
-    <Incline>%s</Incline>""" % (row.Time, row.Miles, row.MPH, row.Watts, row.HR, row.RPM, row.Resistance, row.RelativeResistance, row.Incline)
-
-def convert_csv_row_to_xml(row):
-    return """<Time>%s</Time>
-    <Miles>%s</Miles>
-    <MPH>%s</MPH>
-    <Watts>%s</Watts>
-    <HR>%s</HR>
-    <RPM>%s</RPM>
-    <Resistance>%s</Resistance>
-    <Relative Resistance>%s</Relative Resistance>
-    <Incline>%s</Incline>""" % (row.Time, row.Miles, row.MPH, row.Watts, row.HR, row.RPM, row.Resistance, row.RelativeResistance, row.Incline)
-
+#def ST_APP_CONFIG_TOML = Path().cwd().parent / \"app_secrets.toml\" - TODO: TT to refactor
 class SideBar:
     app_name = APP_NAME
     client_name = CLIENT_NAME
@@ -100,8 +72,7 @@ def app_mainscreen(APP_NAME, sb):
 
     # IMPORT TCX
         tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx'])
-
-        #new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
+        new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
     
     else:
         DATASOURCE_TYPE = "gh"
