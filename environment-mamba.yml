@@ -17,6 +17,9 @@ dependencies:
   # Streamlit and friends
   - streamlit
   - lxml
-# - streamlit-folium
-- pip:
-   - -e .
+  # - streamlit-folium
+  - pip:
+    - -e .
+
+
+# Currently choosing to be a Python 3.8 environment

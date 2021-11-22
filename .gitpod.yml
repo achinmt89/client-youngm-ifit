@@ -41,12 +41,16 @@ tasks:
       rm /workspace/Mambaforge3-Linux-x86_64.sh
       /workspace/miniforge3/bin/conda init bash
       source ~/.bashrc
-      mamba env create --file environment-mamba.yml -n client-youngm-ifit
-      conda activate client-youngm-ifit
-      python -m ipykernel install --user --name=client-youngm-ifit
+      # conda deactivate
+      conda config --set report_errors false
+      conda env update --name=base --file=environment-mamba.yml 
+      source activate base
+      python -m ipykernel install --user --name=base
       conda -V && python -V
 
-## Currently 'dbooth' chooses to be a python 3.8 environment
+      # mamba env create --file environment-mamba.yml -n client-youngm-ifit
+      # conda activate client-youngm-ifit
+
 
 # NOTE: Plan for now is just to work in the conda base environment - could use a one or two other
 #       conda envs if warranted -- this disposable Gitpod.io infrastructure sort of takes care
