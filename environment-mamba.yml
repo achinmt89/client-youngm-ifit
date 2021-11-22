@@ -16,6 +16,7 @@ dependencies:
   - ipykernel
   # Streamlit and friends
   - streamlit
+  - lxml
 # - streamlit-folium
-# - pip:
-#   - TODO
+- pip:
+   - -e .
