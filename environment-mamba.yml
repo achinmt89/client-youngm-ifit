@@ -1,4 +1,3 @@
-name: client-youngm-ifit
 channels:
   - conda-forge
   - defaults
@@ -11,13 +10,13 @@ dependencies:
   - numpy
   - scipy
   - pandas
+  - lxml
   # Jupyter - Lab, Notebook, ipykernel
   - jupyterlab 
   - ipykernel
   # Streamlit and friends
   - streamlit
-  - lxml
-  # - streamlit-folium
+  # Pip installs
   - pip:
     - -e .
 
