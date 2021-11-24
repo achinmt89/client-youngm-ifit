@@ -35,7 +35,7 @@ IFIT_BRAND_URL = "https://images.contentstack.io/v3/assets/blt1d89a78b502b83f3/b
 #IMAGE_PATH = Path.cwd().resolve()/IMAGE_PATH
 
 DATAFILE_PATH = "data"
-DATAFILE_CSV  = "2021_09_10_15_09_Sassafras_Power_Climb,_Sunset,_South_Carolina.csv"
+DATAFILE_CSV  = "2021_09_26_17_09_Chamonix_Ride_Part_1,_France.csv"
 DATAFILE_URL_PATH = "https://raw.githubusercontent.com/DataBooth/client-youngm-ifit/main/data/" 
 DATAFILE_URL = DATAFILE_URL_PATH + DATAFILE_CSV.replace(",", "%2C")
 
@@ -64,8 +64,31 @@ def load_and_cache_data():
     return data_df
 
 
+#def convert_xml_to_dataframe(xml_str, df_cols, tag="data"):
+    #st.write(xml_str)
+#    etree = et.fromstring(xml_str)
+#    eroot = etree.getroot() 
+#    st.write(eroot)
+#    df = pd.DataFrame(columns=df_cols)
+#    for i in etree.iter(tag=tag):
+#        df = df.append(
+#            pd.Series([i.get(df_cols[0]), i.get(df_cols[1])], index=dfcols),
+#            ignore_index=True)
+#    return df
+
+    import jxmlease
+
+def test_easyxml():
+    myparser = jxmlease.Parser()
+    root = myparser("<a>foo</a>")
+    st.write(root)
+    return root
+
+
 def app_mainscreen(APP_NAME, sb):
     st.header(APP_NAME + " // " + CLIENT_NAME)
+
+    root = test_easyxml()
 
     if sb.data_local == True:
         csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv'])
@@ -95,9 +118,26 @@ def app_mainscreen(APP_NAME, sb):
 
     if tcx_file_name is not None:
         # st.write(tcx_file_name)
+        #tmp = pd.read_xml(tcx_file_name)
+        #st.write(pd.__version__)
+        
+        # if it is a file
+        #with open(tcx_file_name) as f:
+        #    xml_str = f.readlines()
+
+    # if it is a URL
+        import requests
+
+        response = requests.get(tcx_file_name)
+        xml_str = response.text
+
+        df_cols = ["DistanceMeters", "Cadence"]
+
+        df_xml = convert_xml_to_dataframe(xml_str, df_cols, tag="data")
+        st.write(df_xml)
 
         try:    
-            xtree = et.parse(tcx_file_name)
+            #xtree = et.parse(tcx_file_name)
             xroot = xtree.getroot() 
 
             df_cols = ["DistanceMeters", "Cadence", "Calories", "HeartRateBPM", "Time", "AltitudeMeters", "LongitudeDegrees", "LatitudeDegrees"]
