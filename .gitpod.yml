@@ -74,5 +74,6 @@ vscode:
     - "ms-python.python"
     - "ms-python.vscode-pylance"
     - "redhat.vscode-yaml"
+    - "dotjoshjohnson.xml"
 #    - "ms-azuretools.vscode-docker"
 
