@@ -48,9 +48,6 @@ tasks:
       python -m ipykernel install --user --name=base
       conda -V && python -V
 
-      # mamba env create --file environment-mamba.yml -n client-youngm-ifit
-      # conda activate client-youngm-ifit
-
 
 # NOTE: Plan for now is just to work in the conda base environment - could use a one or two other
 #       conda envs if warranted -- this disposable Gitpod.io infrastructure sort of takes care
