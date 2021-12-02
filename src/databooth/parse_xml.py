@@ -3,7 +3,7 @@ import xml.etree.ElementTree as et
 
 # Acknowledgement: https://medium.com/@robertopreste/from-xml-to-pandas-dataframes-9292980b1c1c
 
-def parse_XML(xml_file, df_cols): 
+def parse_XML(xml_file, df_cols, start_depth): 
     """Parse the input XML file and store the result in a pandas 
     DataFrame with the given columns. 
     
@@ -15,6 +15,10 @@ def parse_XML(xml_file, df_cols):
     
     xtree = et.parse(xml_file)
     xroot = xtree.getroot()
+    #count = 0
+    #while count < start_depth:
+    #    xroot = xroot.child
+
     rows = []
     
     for node in xroot: 
@@ -30,4 +34,4 @@ def parse_XML(xml_file, df_cols):
     
     out_df = pd.DataFrame(rows, columns=df_cols)
         
-    return out_df
+    return xroot, out_df
