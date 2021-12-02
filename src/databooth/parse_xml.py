@@ -1,5 +1,5 @@
-#import pandas as pd
-#import xml.etree.ElementTree as et
+import pandas as pd
+import xml.etree.ElementTree as et
 
 # Acknowledgement: https://medium.com/@robertopreste/from-xml-to-pandas-dataframes-9292980b1c1c
 
