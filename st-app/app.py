@@ -81,20 +81,16 @@ def app_mainscreen(APP_NAME, sb):
     st.header(APP_NAME + " // " + CLIENT_NAME)
 
     if sb.data_local == True:
-        csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv'])
-
-    # IMPORT TCX
-        tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx'])
-        new_tcx = ''.join(data_df.apply(convert_csv_row_to_xml, axis=1))
+        csv_file_name = st.file_uploader("Name of CSV data file to convert?", type=['csv']) # CSV file uploader tool
+        tcx_file_name = st.file_uploader("Name of TCX data file you would like to merge", type = ['tcx']) # TCX file uploader tool
     
     else:
         DATASOURCE_TYPE = "gh"
         csv_file_name, tcx_file_name = set_local_or_remote_data_path(DATASOURCE_TYPE, DATAFILE_PATH, DATAFILE_CSV, DATAFILE_URL)
         st.write("CSV: " + csv_file_name)
         st.write("TCX: " + tcx_file_name)
-    # CONVERT TCX to CSV - instead let's just make tcx into a pandas data frame
 
-    # import data
+    # Converting the CSV file into a dataframe
     data_df = pd.DataFrame()
 
     if csv_file_name is not None:
@@ -106,6 +102,7 @@ def app_mainscreen(APP_NAME, sb):
     if show_raw_csv:
         st.write(data_df)
 
+    # Converting the TCX file into a dataframe
     if tcx_file_name is not None:
         df_cols = ["DistanceMeters", "Cadence", "Calories", "HeartRateBPM", "Time", "AltitudeMeters", "LongitudeDegrees", "LatitudeDegrees"]
 
@@ -128,9 +125,20 @@ def app_mainscreen(APP_NAME, sb):
             st.write(e)
 
 
-    # merging the two
-    # have to figure out a way to minus time 0 from time 1 in the tcx file - it just comes out as the time and seconds
-    # pd.merge(tcx_df, data_df, on = "Time")
+    # MERGING THE TWO
+    final_df = pd.merge(tcx_df2, data_df, on = "Time")
+
+    # csv counts in seconds
+    # tcx time column is the specific time.
+
+
+    # EXPORTING THE DATAFRAME (CSV, XML)
+    export_csv = st.checkbox("Export to CSV")
+    if export_csv:
+        final_df.to_csv(r'DATAFILE_URL', index = False)
+
+    #export_tcx = st.checkbox("Export to XML")
+    #if export_tcx:
 
 sb = app_sidebar(APP_NAME)
 
@@ -142,7 +150,3 @@ app_mainscreen(APP_NAME, sb)
 # TODO: do testing
 # TODO: complete documentation
 # TODO: refactor and retest
-
-
-# https://medium.com/analytics-vidhya/converting-xml-data-to-csv-format-using-python-3ea09fa18d38
-# https://www.geeksforgeeks.org/convert-xml-to-csv-in-python/
